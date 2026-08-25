@@ -1,0 +1,12 @@
+.git
+.idea
+.vscode
+.env
+.env.*
+!.env.example
+*.log
+*.exe
+bin/
+coverage.out
+node_modules/
+tmp/

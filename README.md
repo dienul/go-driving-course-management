@@ -1,13 +1,223 @@
 # Driving Course Management System
 
-REST API final project built with Go, Gin, GORM, PostgreSQL, versioned SQL
-migrations, and Swagger/OpenAPI.
+## Project overview
 
-The implemented phases provide application bootstrap, versioned PostgreSQL
-schema and seed data, JWT authentication, and administrator-only trainer,
-student, package, material, and sub-material management.
+A production-ready REST API for managing a driving school from student
+registration through course enrollment, payment, trainer scheduling, practical
+sessions, skill assessments, trainer reviews, and certificate issuance.
 
-## Requirements
+Production service:
+
+- API: https://go-driving-course-management-production.up.railway.app
+- Health: https://go-driving-course-management-production.up.railway.app/health
+- Swagger UI:
+  https://go-driving-course-management-production.up.railway.app/swagger/index.html
+
+## Business flow
+
+1. An administrator is created by the idempotent database seeder.
+2. Administrators manage trainers, students, packages, and the driving
+   curriculum.
+3. A student registers and signs in with an individual JWT.
+4. The student chooses an active course package and creates an enrollment.
+5. Enrollment creates a package snapshot and one unpaid payment atomically.
+6. Payment issues an invoice and activates the enrollment in one transaction.
+7. A trainer proposes weekday availability and an administrator publishes it.
+8. The student books an available two-hour training slot.
+9. The assigned trainer starts the session, records skill assessments, and
+   writes a general evaluation.
+10. Completing the final purchased session completes the enrollment and issues
+    a certificate atomically.
+11. The student can monitor global skill progression and review the trainer.
+12. Administrators supervise operations while protected internal endpoints
+    expose service health and operational statistics.
+
+## Roles
+
+| Role | Authentication | Responsibilities |
+| --- | --- | --- |
+| `STUDENT` | JWT Bearer | Register, enroll, pay, inspect invoices, book sessions, monitor skills, review trainers, and access personal certificates. |
+| `TRAINER` | JWT Bearer | Maintain availability, conduct assigned training sessions, assess skills, evaluate students, and inspect personal reviews. |
+| `ADMIN` | JWT Bearer | Manage users, packages, curriculum, availability publication, enrollment/payment oversight, sessions, reviews, and certificates. |
+| Internal monitoring | HTTP Basic Auth | Inspect protected service health and aggregate operational statistics. |
+
+All role-protected requests reload the active account from PostgreSQL. A user
+cannot escalate privileges by submitting a different role in an API payload.
+
+## Technology stack
+
+| Component | Technology |
+| --- | --- |
+| Language | Go 1.24+ with Go Modules |
+| HTTP framework | Gin |
+| Database | PostgreSQL |
+| ORM | GORM |
+| Database migration | `golang-migrate` with versioned PostgreSQL SQL files |
+| Authentication | JWT Bearer and HTTP Basic Auth |
+| Password hashing | bcrypt |
+| API documentation | Swagger / OpenAPI 2.0 |
+| Automated testing | Go unit tests and PostgreSQL integration tests |
+| API regression collection | Postman Collection v2.1 |
+| Containerization | Multi-stage Docker build |
+| Production hosting | Railway |
+
+## Architecture
+
+```text
+HTTP request
+  -> Gin router
+  -> JWT / Basic Auth / role middleware
+  -> handler and DTO validation
+  -> service and business rules
+  -> repository and database transactions
+  -> PostgreSQL
+```
+
+Package layout:
+
+```text
+cmd/
+  main.go             API server entry point
+  migrate/main.go     Versioned migration command
+  seed/main.go        Admin and master-data seeder
+config/               Environment and PostgreSQL configuration
+docs/                 Generated Swagger/OpenAPI files
+dto/                  API request and response contracts
+handlers/             Gin HTTP handlers and Swagger annotations
+middleware/           JWT, HTTP Basic Auth, and role authorization
+migrations/           15 ordered PostgreSQL UP/DOWN migration pairs
+models/               Persistent entities, statuses, and value objects
+postman/              Complete Postman regression collection
+repositories/         Persistence, locking, and transactional operations
+routes/               Public and role-specific endpoint registration
+seeds/                Idempotent admin, package, and curriculum seed data
+services/             Application use cases and business validations
+tests/                API, migration, Postman, and PostgreSQL integration tests
+utils/                Shared HTTP response helpers
+Dockerfile            Production server, migration, and seeder image
+```
+
+## Database
+
+The application uses exactly 15 relational PostgreSQL tables defined by 15
+ordered UP migrations and 15 corresponding DOWN migrations:
+
+1. `users`
+2. `student_profiles`
+3. `trainer_profiles`
+4. `course_packages`
+5. `materials`
+6. `sub_materials`
+7. `student_enrollments`
+8. `payments`
+9. `invoices`
+10. `trainer_availabilities`
+11. `training_sessions`
+12. `session_skill_assessments`
+13. `session_evaluations`
+14. `trainer_reviews`
+15. `certificates`
+
+PostgreSQL constraints enforce valid roles, unique emails, package durations,
+positive prices, one active enrollment per student, one payment per
+enrollment, one invoice per payment, weekday operating hours, two-hour
+sessions, lifecycle timestamps, one assessment per session/sub-material, one
+review per session, and one certificate per enrollment.
+
+### Entity relationship diagram
+
+```mermaid
+erDiagram
+    USERS {
+        bigint id PK
+        varchar email UK
+        varchar role
+        varchar status
+    }
+    STUDENT_PROFILES {
+        bigint id PK
+        bigint user_id FK
+    }
+    TRAINER_PROFILES {
+        bigint id PK
+        bigint user_id FK
+    }
+    COURSE_PACKAGES {
+        bigint id PK
+        int total_hours
+        bigint price
+    }
+    MATERIALS {
+        bigint id PK
+        int sequence
+    }
+    SUB_MATERIALS {
+        bigint id PK
+        bigint material_id FK
+    }
+    STUDENT_ENROLLMENTS {
+        bigint id PK
+        bigint student_id FK
+        bigint package_id FK
+        varchar status
+    }
+    PAYMENTS {
+        bigint id PK
+        bigint enrollment_id FK
+        varchar status
+    }
+    INVOICES {
+        bigint id PK
+        bigint payment_id FK
+    }
+    TRAINER_AVAILABILITIES {
+        bigint id PK
+        bigint trainer_id FK
+        bigint published_by FK
+    }
+    TRAINING_SESSIONS {
+        bigint id PK
+        bigint enrollment_id FK
+        bigint trainer_id FK
+        bigint trainer_availability_id FK
+        varchar status
+    }
+    SESSION_SKILL_ASSESSMENTS {
+        bigint id PK
+        bigint training_session_id FK
+        bigint sub_material_id FK
+    }
+    SESSION_EVALUATIONS {
+        bigint id PK
+        bigint training_session_id FK
+    }
+    TRAINER_REVIEWS {
+        bigint id PK
+        bigint training_session_id FK
+    }
+    CERTIFICATES {
+        bigint id PK
+        bigint enrollment_id FK
+    }
+    USERS ||--o| STUDENT_PROFILES : has
+    USERS ||--o| TRAINER_PROFILES : has
+    USERS ||--o{ STUDENT_ENROLLMENTS : purchases
+    USERS ||--o{ TRAINER_AVAILABILITIES : offers
+    USERS ||--o{ TRAINING_SESSIONS : trains
+    COURSE_PACKAGES ||--o{ STUDENT_ENROLLMENTS : selected_for
+    MATERIALS ||--o{ SUB_MATERIALS : contains
+    STUDENT_ENROLLMENTS ||--o| PAYMENTS : creates
+    PAYMENTS ||--o| INVOICES : issues
+    STUDENT_ENROLLMENTS ||--o{ TRAINING_SESSIONS : includes
+    TRAINER_AVAILABILITIES ||--o{ TRAINING_SESSIONS : schedules
+    TRAINING_SESSIONS ||--o{ SESSION_SKILL_ASSESSMENTS : records
+    SUB_MATERIALS ||--o{ SESSION_SKILL_ASSESSMENTS : assessed_by
+    TRAINING_SESSIONS ||--o| SESSION_EVALUATIONS : receives
+    TRAINING_SESSIONS ||--o| TRAINER_REVIEWS : receives
+    STUDENT_ENROLLMENTS ||--o| CERTIFICATES : earns
+```
+
+## Prerequisites
 
 - Go 1.24 or newer
 - PostgreSQL
@@ -16,22 +226,39 @@ student, package, material, and sub-material management.
 
 ## Local setup
 
-1. Copy `.env.example` to `.env` and update its values.
-2. Create the PostgreSQL database named in `DATABASE_URL`.
-3. Download dependencies and start the server:
+1. Clone the repository and enter its directory.
+2. Copy `.env.example` to `.env` and configure PostgreSQL, JWT, Basic Auth,
+   and the initial administrator.
+3. Create the PostgreSQL database named in `DATABASE_URL`.
+4. Download dependencies, apply all migrations, seed the database, and start
+   the API:
 
    ```bash
    go mod download
+   go run ./cmd/migrate up
+   go run ./cmd/seed
    go run ./cmd
    ```
 
 The application loads `.env` for local development. In deployed environments,
 provide the same variables through the platform configuration.
 
-## Endpoints
+## REST API overview
 
 - Health: `GET http://localhost:8080/health`
 - Swagger UI: `GET http://localhost:8080/swagger/index.html`
+
+| Group | Prefix | Authentication | Operations |
+| --- | --- | --- | ---: |
+| Public health and account registration/login | `/health`, `/api/users` | None | 3 |
+| Current authenticated account | `/api/v1/auth` | JWT Bearer | 1 |
+| Student | `/api/v1/student` | Student JWT | 22 |
+| Trainer | `/api/v1/trainer` | Trainer JWT | 16 |
+| Administrator | `/api/v1/admin` | Administrator JWT | 41 |
+| Internal monitoring | `/api/v1/internal` | HTTP Basic Auth | 2 |
+
+The complete API therefore exposes 85 documented operations; Swagger UI itself
+is served separately at `/swagger/index.html`.
 
 Expected health response:
 
@@ -71,7 +298,18 @@ Migration SQL files belong in `migrations/` and must use matching `.up.sql` and
 `.down.sql` files. Schema migration uses `golang-migrate`; GORM `AutoMigrate` is
 not used.
 
-## Swagger generation
+## Swagger and OpenAPI
+
+Interactive documentation is available at:
+
+- Local: http://localhost:8080/swagger/index.html
+- Production:
+  https://go-driving-course-management-production.up.railway.app/swagger/index.html
+- Generated OpenAPI JSON: `/swagger/doc.json`.
+
+In Swagger UI, select **Authorize** and enter `Bearer <JWT token>` for
+`BearerAuth`, or enter the configured `BASIC_AUTH_USERNAME` and
+`BASIC_AUTH_PASSWORD` for `BasicAuth`.
 
 Regenerate the OpenAPI files after changing endpoint annotations:
 
@@ -79,18 +317,32 @@ Regenerate the OpenAPI files after changing endpoint annotations:
 go run github.com/swaggo/swag/cmd/swag@v1.16.6 init -g cmd/main.go
 ```
 
-## Phase 1 environment variables
+## Environment variables
 
-| Variable | Purpose |
-| --- | --- |
-| `APP_ENV` | Application environment name |
-| `APP_PORT` | HTTP server port |
-| `DATABASE_URL` | PostgreSQL connection URL |
+| Variable | Required | Example | Purpose |
+| --- | --- | --- | --- |
+| `APP_ENV` | No | `production` | Runtime environment label; defaults to `development`. |
+| `APP_PORT` | No | `8080` | Local HTTP port; Docker derives it from Railway `PORT`. |
+| `PORT` | Railway | `8080` | Platform-assigned port consumed automatically at startup. |
+| `DATABASE_URL` | Yes | `postgres://user:password@host:5432/database?sslmode=require` | PostgreSQL connection URL used by migration, seeding, and the API. |
+| `JWT_SECRET` | Yes | `replace-with-at-least-32-random-characters` | JWT HS256 signing secret containing at least 32 bytes. |
+| `JWT_EXPIRES_IN` | No | `24h` | JWT token lifetime; defaults to 24 hours. |
+| `BASIC_AUTH_USERNAME` | Internal endpoints | `internal` | Protected monitoring username. |
+| `BASIC_AUTH_PASSWORD` | Internal endpoints | `a-strong-monitoring-password` | Protected monitoring password. |
+| `ADMIN_NAME` | Seeder | `System Administrator` | Initial administrator name. |
+| `ADMIN_EMAIL` | Seeder | `admin@example.com` | Initial administrator login email. |
+| `ADMIN_PASSWORD` | Seeder | `a-strong-admin-password` | Initial administrator password, stored as a bcrypt hash. |
+| `TEST_DATABASE_URL` | Integration tests | `postgres://user:password@localhost:5432/driving_course_test?sslmode=disable` | Separate migrated PostgreSQL test database. |
 
-The example file also reserves the JWT, Basic Auth, and initial admin variables
-required by later roadmap phases.
+Never commit `.env` files, production database credentials, administrator
+passwords, JWT secrets, or Basic Auth credentials. The application intentionally
+fails to start when PostgreSQL cannot be reached or the JWT secret is invalid.
+Docker deployment also requires all three administrator variables because the
+seeder runs before the API.
 
-## Phase 2 database setup
+## Migration and seed
+
+### PostgreSQL schema and initial data
 
 Phase 2 defines exactly 15 PostgreSQL tables through 30 ordered SQL files in
 `migrations/`. SQL migrations are the schema source of truth; the application
@@ -132,7 +384,7 @@ Initial package prices are explicit sample values:
 These seed prices and curriculum descriptions are development defaults and can
 be revised before production without changing the migration schema.
 
-## Phase 3 authentication
+## Authentication
 
 Set a random JWT secret of at least 32 bytes:
 
@@ -551,3 +803,149 @@ credentials cannot replace JWTs on student, trainer, or administrator routes.
 If either environment credential is absent, internal endpoints fail closed with
 `500`. Database failures return `503` without exposing connection details.
 The existing public `GET /health` endpoint remains unauthenticated.
+
+## Postman collection
+
+Import the version 2.1 collection:
+
+```text
+postman/Driving-Course-Management.postman_collection.json
+```
+
+The collection contains 124 requests in eight folders:
+
+1. Health and Swagger.
+2. Public authentication and role-specific login.
+3. Student operations.
+4. Trainer operations.
+5. Administrator operations.
+6. Internal HTTP Basic Auth operations.
+7. Role and security rejection scenarios.
+8. End-to-end registration, enrollment, payment, three practical sessions,
+   skill assessment, trainer review, certificate issuance, and internal
+   statistics.
+
+Configure these collection variables before running requests:
+
+| Variable | Local value | Production value |
+| --- | --- | --- |
+| `base_url` | `http://localhost:8080` | `https://go-driving-course-management-production.up.railway.app` |
+| `admin_email` | Your configured `ADMIN_EMAIL` | Your production `ADMIN_EMAIL` |
+| `admin_password` | Your configured `ADMIN_PASSWORD` | Your production `ADMIN_PASSWORD` |
+| `basic_username` | Your configured `BASIC_AUTH_USERNAME` | Your production `BASIC_AUTH_USERNAME` |
+| `basic_password` | Your configured `BASIC_AUTH_PASSWORD` | Your production `BASIC_AUTH_PASSWORD` |
+
+Student/trainer credentials, the next available weekday, JWTs, and resource
+identifiers are managed through collection variables and response test scripts.
+Run the **07 End-to-End Business Flow** folder for the complete three-session
+workflow. The environment must already have migrated tables, seeded
+administrator data, the four course packages, and active curriculum records.
+
+## Testing
+
+Run all available unit tests and database-independent contract checks:
+
+```bash
+go test ./...
+go vet ./...
+go build ./...
+```
+
+PostgreSQL integration tests are enabled by setting `TEST_DATABASE_URL` to a
+dedicated migrated test database:
+
+```bash
+export DATABASE_URL='postgres://postgres:postgres@localhost:5432/driving_course_test?sslmode=disable'
+export TEST_DATABASE_URL="$DATABASE_URL"
+go run ./cmd/migrate up
+go test -count=1 ./...
+go run ./cmd/migrate down 15
+```
+
+PowerShell equivalent:
+
+```powershell
+$env:DATABASE_URL = 'postgres://postgres:postgres@localhost:5432/driving_course_test?sslmode=disable'
+$env:TEST_DATABASE_URL = $env:DATABASE_URL
+go run ./cmd/migrate up
+go test -count=1 ./...
+go run ./cmd/migrate down 15
+```
+
+The suite covers API registration/login, student/trainer/administrator role
+isolation, Basic Auth, 15 ordered migrations, PostgreSQL business constraints,
+transaction rollback, concurrent trainer booking conflicts, trainer
+availability, complete training session lifecycle, skill score thresholds,
+trainer reviews, certificate issuance, Swagger UI/OpenAPI coverage, all 85
+documented operations, Postman request contracts, the executable three-session
+Postman business flow, and idempotent bcrypt-protected admin seeding.
+
+Never run integration tests or migration rollbacks against a production
+database.
+
+## Railway deployment
+
+The root `Dockerfile` uses a multi-stage build. Its builder compiles three
+independent binaries:
+
+```text
+/app/server     API server from ./cmd
+/app/migrate    PostgreSQL migration command from ./cmd/migrate
+/app/seed       Administrator and master-data seeder from ./cmd/seed
+```
+
+The Alpine runtime performs startup in this strict order:
+
+```sh
+export APP_PORT=${PORT:-8080}
+/app/migrate up
+/app/seed
+exec /app/server
+```
+
+This ensures the production schema is migrated and the administrator, course
+packages, and curriculum are available before the health check succeeds. The
+seed is transactional and idempotent.
+
+To deploy:
+
+1. Push the repository, including `Dockerfile` and `migrations/`, to GitHub.
+2. Create a Railway project and attach a PostgreSQL service.
+3. Create an application service from the GitHub repository. Railway detects
+   the root `Dockerfile` automatically.
+4. Configure `DATABASE_URL` using the Railway PostgreSQL connection reference.
+5. Configure `JWT_SECRET`, `JWT_EXPIRES_IN`, `BASIC_AUTH_USERNAME`,
+   `BASIC_AUTH_PASSWORD`, `ADMIN_NAME`, `ADMIN_EMAIL`, and `ADMIN_PASSWORD`.
+6. Set the healthcheck path to `/health` and configure public networking.
+7. Leave **Custom Start Command** and **Pre-deploy Command** empty; the
+   Dockerfile already handles migration, seed, the platform port, and startup.
+8. Deploy or redeploy the application.
+9. Confirm the deployment logs contain `migration completed` or
+   `no migration changes`, followed by `seed completed`.
+10. Verify the production service:
+
+```bash
+curl https://go-driving-course-management-production.up.railway.app/health
+curl https://go-driving-course-management-production.up.railway.app/swagger/doc.json
+```
+
+Then open:
+
+```text
+https://go-driving-course-management-production.up.railway.app/swagger/index.html
+```
+
+The public `/health` endpoint pings PostgreSQL, so a successful response
+verifies both the deployed API and its production database connection. Access
+protected internal operational statistics with:
+
+```bash
+curl --user "$BASIC_AUTH_USERNAME:$BASIC_AUTH_PASSWORD" \
+  https://go-driving-course-management-production.up.railway.app/api/v1/internal/stats
+```
+
+If deployment exits immediately, inspect Railway **Deploy Logs**. Common causes
+are a missing `DATABASE_URL`, an unreachable PostgreSQL service, a `JWT_SECRET`
+shorter than 32 bytes, or missing `ADMIN_NAME`/`ADMIN_EMAIL`/`ADMIN_PASSWORD`.
+Avoid custom startup commands containing `go run` because the final Alpine
+image intentionally contains compiled binaries without the Go toolchain.
