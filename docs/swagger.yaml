@@ -1,0 +1,4974 @@
+basePath: /
+definitions:
+  dto.AvailabilityAPIResponse:
+    properties:
+      data:
+        $ref: '#/definitions/dto.AvailabilityData'
+      message:
+        example: success
+        type: string
+      success:
+        example: true
+        type: boolean
+    type: object
+  dto.AvailabilityData:
+    properties:
+      available_date:
+        example: "2026-08-31"
+        type: string
+      created_at:
+        type: string
+      end_time:
+        example: "12:00"
+        type: string
+      id:
+        example: 1
+        type: integer
+      published_at:
+        type: string
+      published_by:
+        type: integer
+      start_time:
+        example: "08:00"
+        type: string
+      status:
+        allOf:
+        - $ref: '#/definitions/models.AvailabilityStatus'
+        example: PENDING
+      trainer_id:
+        example: 1
+        type: integer
+      updated_at:
+        type: string
+    type: object
+  dto.AvailabilityListAPIResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/dto.AvailabilityData'
+        type: array
+      message:
+        example: success
+        type: string
+      success:
+        example: true
+        type: boolean
+    type: object
+  dto.BookTrainingSessionRequest:
+    properties:
+      start_time:
+        example: "08:00"
+        type: string
+      trainer_availability_id:
+        example: 10
+        type: integer
+    required:
+    - start_time
+    - trainer_availability_id
+    type: object
+  dto.CancelTrainingSessionRequest:
+    properties:
+      cancellation_reason:
+        example: Student has an urgent appointment.
+        maxLength: 2000
+        minLength: 2
+        type: string
+    required:
+    - cancellation_reason
+    type: object
+  dto.CertificateAPIResponse:
+    properties:
+      data:
+        $ref: '#/definitions/dto.CertificateData'
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  dto.CertificateData:
+    properties:
+      certificate_number:
+        example: CERT-20260825-0001
+        type: string
+      created_at:
+        type: string
+      enrollment:
+        $ref: '#/definitions/models.StudentEnrollment'
+      enrollment_id:
+        example: 1
+        type: integer
+      id:
+        example: 1
+        type: integer
+      issued_at:
+        type: string
+      skill_level:
+        allOf:
+        - $ref: '#/definitions/models.SkillLevel'
+        example: CAPABLE
+      skill_score:
+        example: 75
+        type: integer
+      student:
+        $ref: '#/definitions/dto.UserResponse'
+      updated_at:
+        type: string
+    type: object
+  dto.CertificateListAPIResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/dto.CertificateData'
+        type: array
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  dto.CreateEnrollmentRequest:
+    properties:
+      package_id:
+        example: 1
+        type: integer
+    required:
+    - package_id
+    type: object
+  dto.CreateTrainerRequest:
+    properties:
+      address:
+        example: Jakarta
+        maxLength: 2000
+        type: string
+      bio:
+        example: Trainer berpengalaman.
+        maxLength: 2000
+        type: string
+      email:
+        example: pandu@example.com
+        maxLength: 255
+        type: string
+      name:
+        example: Pandu Pratama
+        maxLength: 150
+        minLength: 2
+        type: string
+      password:
+        example: strong-password
+        maxLength: 72
+        minLength: 8
+        type: string
+      phone:
+        example: "081234567890"
+        maxLength: 30
+        type: string
+    required:
+    - email
+    - name
+    - password
+    type: object
+  dto.EnrollmentAPIResponse:
+    properties:
+      data:
+        $ref: '#/definitions/models.StudentEnrollment'
+      message:
+        example: success
+        type: string
+      success:
+        example: true
+        type: boolean
+    type: object
+  dto.EnrollmentCheckoutAPIResponse:
+    properties:
+      data:
+        $ref: '#/definitions/dto.EnrollmentCheckoutData'
+      message:
+        example: enrollment created successfully
+        type: string
+      success:
+        example: true
+        type: boolean
+    type: object
+  dto.EnrollmentCheckoutData:
+    properties:
+      enrollment:
+        $ref: '#/definitions/models.StudentEnrollment'
+      payment:
+        $ref: '#/definitions/models.Payment'
+    type: object
+  dto.EnrollmentListAPIResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/models.StudentEnrollment'
+        type: array
+      message:
+        example: success
+        type: string
+      success:
+        example: true
+        type: boolean
+    type: object
+  dto.ErrorResponse:
+    properties:
+      errors:
+        type: object
+      message:
+        example: error message
+        type: string
+      success:
+        example: false
+        type: boolean
+    type: object
+  dto.InternalStatsAPIResponse:
+    properties:
+      data:
+        $ref: '#/definitions/dto.InternalStatsData'
+      message:
+        example: success
+        type: string
+      success:
+        example: true
+        type: boolean
+    type: object
+  dto.InternalStatsData:
+    properties:
+      active_enrollments:
+        example: 34
+        type: integer
+      completed_training_sessions:
+        example: 410
+        type: integer
+      in_progress_training_sessions:
+        example: 3
+        type: integer
+      paid_payments:
+        example: 140
+        type: integer
+      scheduled_training_sessions:
+        example: 20
+        type: integer
+      total_admins:
+        example: 2
+        type: integer
+      total_certificates:
+        example: 88
+        type: integer
+      total_enrollments:
+        example: 150
+        type: integer
+      total_students:
+        example: 120
+        type: integer
+      total_trainer_reviews:
+        example: 305
+        type: integer
+      total_trainers:
+        example: 12
+        type: integer
+      total_training_sessions:
+        example: 450
+        type: integer
+    type: object
+  dto.InvoiceAPIResponse:
+    properties:
+      data:
+        $ref: '#/definitions/dto.InvoiceData'
+      message:
+        example: success
+        type: string
+      success:
+        example: true
+        type: boolean
+    type: object
+  dto.InvoiceData:
+    properties:
+      created_at:
+        type: string
+      enrollment:
+        $ref: '#/definitions/models.StudentEnrollment'
+      id:
+        example: 1
+        type: integer
+      invoice_number:
+        example: INV-20260825-0001
+        type: string
+      issued_at:
+        type: string
+      payment:
+        $ref: '#/definitions/models.Payment'
+      payment_id:
+        example: 1
+        type: integer
+      student:
+        $ref: '#/definitions/dto.UserResponse'
+      updated_at:
+        type: string
+    type: object
+  dto.InvoiceListAPIResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/dto.InvoiceData'
+        type: array
+      message:
+        example: success
+        type: string
+      success:
+        example: true
+        type: boolean
+    type: object
+  dto.LoginData:
+    properties:
+      expires_at:
+        type: string
+      token:
+        example: eyJhbGciOiJIUzI1NiIs...
+        type: string
+      token_type:
+        example: Bearer
+        type: string
+      user:
+        $ref: '#/definitions/dto.UserResponse'
+    type: object
+  dto.LoginRequest:
+    properties:
+      email:
+        example: dienul@example.com
+        maxLength: 255
+        type: string
+      password:
+        example: strong-password
+        maxLength: 72
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  dto.LoginResponse:
+    properties:
+      data:
+        $ref: '#/definitions/dto.LoginData'
+      message:
+        example: login successful
+        type: string
+      success:
+        example: true
+        type: boolean
+    type: object
+  dto.MaterialAPIResponse:
+    properties:
+      data:
+        $ref: '#/definitions/models.Material'
+      message:
+        example: success
+        type: string
+      success:
+        example: true
+        type: boolean
+    type: object
+  dto.MaterialListAPIResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/models.Material'
+        type: array
+      message:
+        example: success
+        type: string
+      success:
+        example: true
+        type: boolean
+    type: object
+  dto.PackageAPIResponse:
+    properties:
+      data:
+        $ref: '#/definitions/models.CoursePackage'
+      message:
+        example: success
+        type: string
+      success:
+        example: true
+        type: boolean
+    type: object
+  dto.PackageListAPIResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/models.CoursePackage'
+        type: array
+      message:
+        example: success
+        type: string
+      success:
+        example: true
+        type: boolean
+    type: object
+  dto.PayRequest:
+    properties:
+      payment_method:
+        allOf:
+        - $ref: '#/definitions/models.PaymentMethod'
+        enum:
+        - BANK_TRANSFER
+        - CASH
+        example: BANK_TRANSFER
+    required:
+    - payment_method
+    type: object
+  dto.PaymentAPIResponse:
+    properties:
+      data:
+        $ref: '#/definitions/models.Payment'
+      message:
+        example: success
+        type: string
+      success:
+        example: true
+        type: boolean
+    type: object
+  dto.PaymentCheckoutAPIResponse:
+    properties:
+      data:
+        $ref: '#/definitions/dto.PaymentCheckoutData'
+      message:
+        example: payment completed successfully
+        type: string
+      success:
+        example: true
+        type: boolean
+    type: object
+  dto.PaymentCheckoutData:
+    properties:
+      enrollment:
+        $ref: '#/definitions/models.StudentEnrollment'
+      invoice:
+        $ref: '#/definitions/dto.InvoiceData'
+      payment:
+        $ref: '#/definitions/models.Payment'
+    type: object
+  dto.PaymentListAPIResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/models.Payment'
+        type: array
+      message:
+        example: success
+        type: string
+      success:
+        example: true
+        type: boolean
+    type: object
+  dto.PreviousTrainingSessionData:
+    properties:
+      assessments:
+        items:
+          $ref: '#/definitions/dto.SessionAssessmentData'
+        type: array
+      evaluation:
+        $ref: '#/definitions/dto.SessionEvaluationData'
+      session:
+        $ref: '#/definitions/dto.TrainingSessionData'
+    type: object
+  dto.RegisterData:
+    properties:
+      user:
+        $ref: '#/definitions/dto.UserResponse'
+    type: object
+  dto.RegisterRequest:
+    properties:
+      address:
+        example: Jakarta
+        maxLength: 2000
+        type: string
+      email:
+        example: dienul@example.com
+        maxLength: 255
+        type: string
+      name:
+        example: Dienul Haq
+        maxLength: 150
+        minLength: 2
+        type: string
+      password:
+        example: strong-password
+        maxLength: 72
+        minLength: 8
+        type: string
+      phone:
+        example: "081234567890"
+        maxLength: 30
+        type: string
+    required:
+    - email
+    - name
+    - password
+    type: object
+  dto.RegisterResponse:
+    properties:
+      data:
+        $ref: '#/definitions/dto.RegisterData'
+      message:
+        example: student registered successfully
+        type: string
+      success:
+        example: true
+        type: boolean
+    type: object
+  dto.RescheduleTrainingSessionRequest:
+    properties:
+      start_time:
+        example: "10:00"
+        type: string
+      trainer_availability_id:
+        example: 11
+        type: integer
+    required:
+    - start_time
+    - trainer_availability_id
+    type: object
+  dto.ScheduleSlotData:
+    properties:
+      end_time:
+        example: "10:00"
+        type: string
+      start_time:
+        example: "08:00"
+        type: string
+    type: object
+  dto.ScheduleTrainerData:
+    properties:
+      id:
+        example: 1
+        type: integer
+      name:
+        example: Pandu Pratama
+        type: string
+    type: object
+  dto.SessionAssessmentData:
+    properties:
+      created_at:
+        type: string
+      id:
+        example: 1
+        type: integer
+      material_id:
+        example: 1
+        type: integer
+      material_name:
+        example: Kontrol Kendaraan
+        type: string
+      skill_status:
+        allOf:
+        - $ref: '#/definitions/models.SkillStatus'
+        example: MASTERED
+      sub_material_id:
+        example: 2
+        type: integer
+      sub_material_name:
+        example: Kemudi
+        type: string
+      training_session_id:
+        example: 1
+        type: integer
+      updated_at:
+        type: string
+    type: object
+  dto.SessionAssessmentListAPIResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/dto.SessionAssessmentData'
+        type: array
+      message:
+        example: success
+        type: string
+      success:
+        example: true
+        type: boolean
+    type: object
+  dto.SessionAssessmentRequest:
+    properties:
+      skill_status:
+        allOf:
+        - $ref: '#/definitions/models.SkillStatus'
+        enum:
+        - NOT_STARTED
+        - PRACTICED
+        - MASTERED
+        example: MASTERED
+      sub_material_id:
+        example: 1
+        type: integer
+    required:
+    - skill_status
+    - sub_material_id
+    type: object
+  dto.SessionEvaluationAPIResponse:
+    properties:
+      data:
+        $ref: '#/definitions/dto.SessionEvaluationData'
+      message:
+        example: success
+        type: string
+      success:
+        example: true
+        type: boolean
+    type: object
+  dto.SessionEvaluationData:
+    properties:
+      created_at:
+        type: string
+      id:
+        example: 1
+        type: integer
+      notes:
+        example: Kontrol kendaraan sudah cukup baik.
+        type: string
+      predicate:
+        allOf:
+        - $ref: '#/definitions/models.EvaluationPredicate'
+        example: BAIK
+      recommendation:
+        example: Fokus latihan parkir.
+        type: string
+      training_session_id:
+        example: 1
+        type: integer
+      updated_at:
+        type: string
+    type: object
+  dto.StudentAPIResponse:
+    properties:
+      data:
+        $ref: '#/definitions/dto.StudentData'
+      message:
+        example: success
+        type: string
+      success:
+        example: true
+        type: boolean
+    type: object
+  dto.StudentData:
+    properties:
+      profile:
+        $ref: '#/definitions/dto.StudentProfileData'
+      user:
+        $ref: '#/definitions/dto.UserResponse'
+    type: object
+  dto.StudentListAPIResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/dto.StudentData'
+        type: array
+      message:
+        example: success
+        type: string
+      success:
+        example: true
+        type: boolean
+    type: object
+  dto.StudentProfileData:
+    properties:
+      address:
+        type: string
+      created_at:
+        type: string
+      id:
+        example: 1
+        type: integer
+      phone:
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        example: 1
+        type: integer
+    type: object
+  dto.StudentScheduleData:
+    properties:
+      availability_id:
+        example: 1
+        type: integer
+      available_date:
+        example: "2026-08-31"
+        type: string
+      slots:
+        items:
+          $ref: '#/definitions/dto.ScheduleSlotData'
+        type: array
+      trainer:
+        $ref: '#/definitions/dto.ScheduleTrainerData'
+    type: object
+  dto.StudentScheduleListAPIResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/dto.StudentScheduleData'
+        type: array
+      message:
+        example: success
+        type: string
+      success:
+        example: true
+        type: boolean
+    type: object
+  dto.StudentSkillData:
+    properties:
+      assessed_at:
+        type: string
+      material_id:
+        example: 1
+        type: integer
+      material_name:
+        example: Vehicle Control
+        type: string
+      skill_status:
+        allOf:
+        - $ref: '#/definitions/models.SkillStatus'
+        example: PRACTICED
+      sub_material_id:
+        example: 2
+        type: integer
+      sub_material_name:
+        example: Parking
+        type: string
+      training_session_id:
+        type: integer
+    type: object
+  dto.StudentSkillHistoryAPIResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/dto.StudentSkillHistoryData'
+        type: array
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  dto.StudentSkillHistoryData:
+    properties:
+      completed_at:
+        type: string
+      created_at:
+        type: string
+      enrollment_id:
+        example: 1
+        type: integer
+      id:
+        example: 1
+        type: integer
+      material_id:
+        example: 1
+        type: integer
+      material_name:
+        example: Vehicle Control
+        type: string
+      session_number:
+        example: 1
+        type: integer
+      skill_status:
+        allOf:
+        - $ref: '#/definitions/models.SkillStatus'
+        example: PRACTICED
+      sub_material_id:
+        example: 2
+        type: integer
+      sub_material_name:
+        example: Parking
+        type: string
+      trainer_id:
+        example: 2
+        type: integer
+      training_session_id:
+        example: 2
+        type: integer
+      updated_at:
+        type: string
+    type: object
+  dto.StudentSkillsAPIResponse:
+    properties:
+      data:
+        $ref: '#/definitions/dto.StudentSkillsData'
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  dto.StudentSkillsData:
+    properties:
+      skill_level:
+        allOf:
+        - $ref: '#/definitions/models.SkillLevel'
+        example: CAPABLE
+      skill_score:
+        example: 75
+        type: integer
+      skills:
+        items:
+          $ref: '#/definitions/dto.StudentSkillData'
+        type: array
+      student_id:
+        example: 3
+        type: integer
+      total_sub_materials:
+        example: 12
+        type: integer
+    type: object
+  dto.SubMaterialAPIResponse:
+    properties:
+      data:
+        $ref: '#/definitions/models.SubMaterial'
+      message:
+        example: success
+        type: string
+      success:
+        example: true
+        type: boolean
+    type: object
+  dto.SubMaterialListAPIResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/models.SubMaterial'
+        type: array
+      message:
+        example: success
+        type: string
+      success:
+        example: true
+        type: boolean
+    type: object
+  dto.TrainerAPIResponse:
+    properties:
+      data:
+        $ref: '#/definitions/dto.TrainerData'
+      message:
+        example: success
+        type: string
+      success:
+        example: true
+        type: boolean
+    type: object
+  dto.TrainerData:
+    properties:
+      profile:
+        $ref: '#/definitions/dto.TrainerProfileData'
+      user:
+        $ref: '#/definitions/dto.UserResponse'
+    type: object
+  dto.TrainerListAPIResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/dto.TrainerData'
+        type: array
+      message:
+        example: success
+        type: string
+      success:
+        example: true
+        type: boolean
+    type: object
+  dto.TrainerProfileData:
+    properties:
+      address:
+        type: string
+      bio:
+        type: string
+      created_at:
+        type: string
+      id:
+        example: 1
+        type: integer
+      phone:
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        example: 1
+        type: integer
+    type: object
+  dto.TrainerReviewAPIResponse:
+    properties:
+      data:
+        $ref: '#/definitions/dto.TrainerReviewData'
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  dto.TrainerReviewData:
+    properties:
+      created_at:
+        type: string
+      feedback:
+        type: string
+      id:
+        example: 1
+        type: integer
+      rating:
+        example: 5
+        type: integer
+      student_id:
+        example: 3
+        type: integer
+      student_name:
+        example: Student Name
+        type: string
+      trainer_id:
+        example: 2
+        type: integer
+      trainer_name:
+        example: Trainer Name
+        type: string
+      training_session_id:
+        example: 1
+        type: integer
+      updated_at:
+        type: string
+    type: object
+  dto.TrainerReviewListAPIResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/dto.TrainerReviewData'
+        type: array
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  dto.TrainerReviewSummaryAPIResponse:
+    properties:
+      data:
+        $ref: '#/definitions/dto.TrainerReviewSummaryData'
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  dto.TrainerReviewSummaryData:
+    properties:
+      average_rating:
+        example: 4.75
+        type: number
+      total_reviews:
+        example: 4
+        type: integer
+      trainer_id:
+        example: 2
+        type: integer
+    type: object
+  dto.TrainerStudentProgressAPIResponse:
+    properties:
+      data:
+        $ref: '#/definitions/dto.TrainerStudentProgressData'
+      message:
+        example: success
+        type: string
+      success:
+        example: true
+        type: boolean
+    type: object
+  dto.TrainerStudentProgressData:
+    properties:
+      previous_sessions:
+        items:
+          $ref: '#/definitions/dto.PreviousTrainingSessionData'
+        type: array
+      student_id:
+        example: 3
+        type: integer
+      training_session_id:
+        example: 2
+        type: integer
+    type: object
+  dto.TrainingSessionAPIResponse:
+    properties:
+      data:
+        $ref: '#/definitions/dto.TrainingSessionData'
+      message:
+        example: success
+        type: string
+      success:
+        example: true
+        type: boolean
+    type: object
+  dto.TrainingSessionData:
+    properties:
+      actual_completed_at:
+        type: string
+      actual_started_at:
+        type: string
+      cancellation_reason:
+        type: string
+      cancelled_at:
+        type: string
+      cancelled_by:
+        type: integer
+      created_at:
+        type: string
+      end_time:
+        example: "10:00"
+        type: string
+      enrollment_id:
+        example: 1
+        type: integer
+      id:
+        example: 1
+        type: integer
+      rescheduled_from_id:
+        type: integer
+      scheduled_date:
+        example: "2026-08-31"
+        type: string
+      session_number:
+        example: 1
+        type: integer
+      start_time:
+        example: "08:00"
+        type: string
+      status:
+        allOf:
+        - $ref: '#/definitions/models.TrainingSessionStatus'
+        example: SCHEDULED
+      trainer_availability_id:
+        example: 10
+        type: integer
+      trainer_id:
+        example: 2
+        type: integer
+      updated_at:
+        type: string
+    type: object
+  dto.TrainingSessionListAPIResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/dto.TrainingSessionData'
+        type: array
+      message:
+        example: success
+        type: string
+      success:
+        example: true
+        type: boolean
+    type: object
+  dto.UpdateStatusRequest:
+    properties:
+      status:
+        allOf:
+        - $ref: '#/definitions/models.RecordStatus'
+        enum:
+        - ACTIVE
+        - INACTIVE
+        example: ACTIVE
+    required:
+    - status
+    type: object
+  dto.UpdateTrainerRequest:
+    properties:
+      address:
+        example: Jakarta
+        maxLength: 2000
+        type: string
+      bio:
+        example: Trainer berpengalaman.
+        maxLength: 2000
+        type: string
+      email:
+        example: pandu@example.com
+        maxLength: 255
+        type: string
+      name:
+        example: Pandu Pratama
+        maxLength: 150
+        minLength: 2
+        type: string
+      phone:
+        example: "081234567890"
+        maxLength: 30
+        type: string
+    required:
+    - email
+    - name
+    type: object
+  dto.UpsertAvailabilityRequest:
+    properties:
+      available_date:
+        example: "2026-08-31"
+        type: string
+      end_time:
+        example: "12:00"
+        type: string
+      start_time:
+        example: "08:00"
+        type: string
+    required:
+    - available_date
+    - end_time
+    - start_time
+    type: object
+  dto.UpsertMaterialRequest:
+    properties:
+      description:
+        example: Mengenal kendaraan.
+        maxLength: 2000
+        type: string
+      name:
+        example: Pengenalan Kendaraan
+        maxLength: 200
+        minLength: 2
+        type: string
+      sequence:
+        example: 1
+        type: integer
+    required:
+    - name
+    - sequence
+    type: object
+  dto.UpsertPackageRequest:
+    properties:
+      description:
+        example: Latihan selama 6 jam.
+        maxLength: 2000
+        type: string
+      level:
+        allOf:
+        - $ref: '#/definitions/models.PackageLevel'
+        enum:
+        - PEMULA
+        - DASAR
+        example: PEMULA
+      name:
+        example: Pemula 6 Jam
+        maxLength: 150
+        minLength: 2
+        type: string
+      price:
+        example: 900000
+        type: integer
+      total_hours:
+        enum:
+        - 6
+        - 8
+        - 10
+        - 12
+        example: 6
+        type: integer
+    required:
+    - level
+    - name
+    - price
+    - total_hours
+    type: object
+  dto.UpsertSessionAssessmentsRequest:
+    properties:
+      assessments:
+        items:
+          $ref: '#/definitions/dto.SessionAssessmentRequest'
+        maxItems: 100
+        minItems: 1
+        type: array
+    required:
+    - assessments
+    type: object
+  dto.UpsertSessionEvaluationRequest:
+    properties:
+      notes:
+        example: Kontrol kendaraan sudah cukup baik.
+        maxLength: 5000
+        type: string
+      predicate:
+        allOf:
+        - $ref: '#/definitions/models.EvaluationPredicate'
+        enum:
+        - KURANG
+        - CUKUP
+        - BAIK
+        - SANGAT_BAIK
+        example: BAIK
+      recommendation:
+        example: Fokus latihan parkir.
+        maxLength: 5000
+        type: string
+    required:
+    - notes
+    - predicate
+    - recommendation
+    type: object
+  dto.UpsertSubMaterialRequest:
+    properties:
+      description:
+        example: Mengendalikan kemudi.
+        maxLength: 2000
+        type: string
+      name:
+        example: Kontrol Kemudi
+        maxLength: 200
+        minLength: 2
+        type: string
+      sequence:
+        example: 1
+        type: integer
+    required:
+    - name
+    - sequence
+    type: object
+  dto.UpsertTrainerReviewRequest:
+    properties:
+      feedback:
+        example: Clear and patient instruction.
+        maxLength: 2000
+        type: string
+      rating:
+        example: 5
+        maximum: 5
+        minimum: 1
+        type: integer
+    required:
+    - rating
+    type: object
+  dto.UserAPIResponse:
+    properties:
+      data:
+        $ref: '#/definitions/dto.UserResponse'
+      message:
+        example: success
+        type: string
+      success:
+        example: true
+        type: boolean
+    type: object
+  dto.UserResponse:
+    properties:
+      created_at:
+        type: string
+      email:
+        example: dienul@example.com
+        type: string
+      id:
+        example: 1
+        type: integer
+      name:
+        example: Dienul Haq
+        type: string
+      role:
+        allOf:
+        - $ref: '#/definitions/models.UserRole'
+        example: STUDENT
+      status:
+        allOf:
+        - $ref: '#/definitions/models.RecordStatus'
+        example: ACTIVE
+      updated_at:
+        type: string
+    type: object
+  handlers.ErrorResponse:
+    properties:
+      errors:
+        type: object
+      message:
+        example: database is unavailable
+        type: string
+      success:
+        example: false
+        type: boolean
+    type: object
+  handlers.HealthResponse:
+    properties:
+      data:
+        type: object
+      message:
+        example: service is running
+        type: string
+      success:
+        example: true
+        type: boolean
+    type: object
+  models.AvailabilityStatus:
+    enum:
+    - PENDING
+    - PUBLISHED
+    - CANCELLED
+    type: string
+    x-enum-varnames:
+    - AvailabilityPending
+    - AvailabilityPublished
+    - AvailabilityCancelled
+  models.CoursePackage:
+    properties:
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      level:
+        $ref: '#/definitions/models.PackageLevel'
+      name:
+        type: string
+      price:
+        type: integer
+      status:
+        $ref: '#/definitions/models.RecordStatus'
+      total_hours:
+        type: integer
+      updated_at:
+        type: string
+    type: object
+  models.EnrollmentStatus:
+    enum:
+    - PENDING_PAYMENT
+    - ACTIVE
+    - COMPLETED
+    - CANCELLED
+    type: string
+    x-enum-varnames:
+    - EnrollmentPendingPayment
+    - EnrollmentActive
+    - EnrollmentCompleted
+    - EnrollmentCancelled
+  models.EvaluationPredicate:
+    enum:
+    - KURANG
+    - CUKUP
+    - BAIK
+    - SANGAT_BAIK
+    type: string
+    x-enum-varnames:
+    - PredicateKurang
+    - PredicateCukup
+    - PredicateBaik
+    - PredicateSangatBaik
+  models.Material:
+    properties:
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      sequence:
+        type: integer
+      status:
+        $ref: '#/definitions/models.RecordStatus'
+      updated_at:
+        type: string
+    type: object
+  models.PackageLevel:
+    enum:
+    - PEMULA
+    - DASAR
+    type: string
+    x-enum-varnames:
+    - PackageLevelPemula
+    - PackageLevelDasar
+  models.Payment:
+    properties:
+      amount:
+        type: integer
+      created_at:
+        type: string
+      enrollment_id:
+        type: integer
+      id:
+        type: integer
+      paid_at:
+        type: string
+      payment_code:
+        type: string
+      payment_method:
+        $ref: '#/definitions/models.PaymentMethod'
+      status:
+        $ref: '#/definitions/models.PaymentStatus'
+      updated_at:
+        type: string
+    type: object
+  models.PaymentMethod:
+    enum:
+    - BANK_TRANSFER
+    - CASH
+    type: string
+    x-enum-varnames:
+    - PaymentMethodBankTransfer
+    - PaymentMethodCash
+  models.PaymentStatus:
+    enum:
+    - UNPAID
+    - PAID
+    type: string
+    x-enum-varnames:
+    - PaymentUnpaid
+    - PaymentPaid
+  models.RecordStatus:
+    enum:
+    - ACTIVE
+    - INACTIVE
+    type: string
+    x-enum-varnames:
+    - StatusActive
+    - StatusInactive
+  models.SkillLevel:
+    enum:
+    - BEGINNER
+    - DEVELOPING
+    - CAPABLE
+    - PROFICIENT
+    type: string
+    x-enum-varnames:
+    - SkillLevelBeginner
+    - SkillLevelDeveloping
+    - SkillLevelCapable
+    - SkillLevelProficient
+  models.SkillStatus:
+    enum:
+    - NOT_STARTED
+    - PRACTICED
+    - MASTERED
+    type: string
+    x-enum-varnames:
+    - SkillNotStarted
+    - SkillPracticed
+    - SkillMastered
+  models.StudentEnrollment:
+    properties:
+      completed_at:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: integer
+      package_id:
+        type: integer
+      package_name:
+        type: string
+      package_price:
+        type: integer
+      started_at:
+        type: string
+      status:
+        $ref: '#/definitions/models.EnrollmentStatus'
+      student_id:
+        type: integer
+      total_hours:
+        type: integer
+      updated_at:
+        type: string
+    type: object
+  models.SubMaterial:
+    properties:
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      material_id:
+        type: integer
+      name:
+        type: string
+      sequence:
+        type: integer
+      status:
+        $ref: '#/definitions/models.RecordStatus'
+      updated_at:
+        type: string
+    type: object
+  models.TrainingSessionStatus:
+    enum:
+    - SCHEDULED
+    - IN_PROGRESS
+    - COMPLETED
+    - CANCELLED
+    - RESCHEDULED
+    type: string
+    x-enum-varnames:
+    - SessionScheduled
+    - SessionInProgress
+    - SessionCompleted
+    - SessionCancelled
+    - SessionRescheduled
+  models.UserRole:
+    enum:
+    - ADMIN
+    - TRAINER
+    - STUDENT
+    type: string
+    x-enum-varnames:
+    - RoleAdmin
+    - RoleTrainer
+    - RoleStudent
+info:
+  contact: {}
+  description: REST API Final Project Bootcamp Intensif Golang
+  title: Driving Course Management System API
+  version: "1.0"
+paths:
+  /api/users/login:
+    post:
+      consumes:
+      - application/json
+      description: Authenticates any ACTIVE ADMIN, TRAINER, or STUDENT account using
+        email and password.
+      parameters:
+      - description: Login credentials
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.LoginResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      summary: Login
+      tags:
+      - Authentication
+  /api/users/register:
+    post:
+      consumes:
+      - application/json
+      description: Creates an ACTIVE STUDENT account and student profile. The role
+        is always determined by the backend.
+      parameters:
+      - description: Student registration
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dto.RegisterResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      summary: Register a student
+      tags:
+      - Authentication
+  /api/v1/admin/certificates:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.CertificateListAPIResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List all issued student certificates
+      tags:
+      - Admin Certificates
+  /api/v1/admin/certificates/{id}:
+    get:
+      parameters:
+      - description: Certificate ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.CertificateAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get an issued student certificate
+      tags:
+      - Admin Certificates
+  /api/v1/admin/enrollments:
+    get:
+      description: List all student enrollments. Requires an ACTIVE ADMIN account.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.EnrollmentListAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List all student enrollments
+      tags:
+      - Admin Enrollments
+  /api/v1/admin/enrollments/{id}:
+    get:
+      description: Get student enrollment. Requires an ACTIVE ADMIN account.
+      parameters:
+      - description: Resource ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.EnrollmentAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get student enrollment
+      tags:
+      - Admin Enrollments
+  /api/v1/admin/invoices:
+    get:
+      description: List all issued invoices. Requires an ACTIVE ADMIN account.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.InvoiceListAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List all issued invoices
+      tags:
+      - Admin Invoices
+  /api/v1/admin/invoices/{id}:
+    get:
+      description: Get issued invoice. Requires an ACTIVE ADMIN account.
+      parameters:
+      - description: Resource ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.InvoiceAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get issued invoice
+      tags:
+      - Admin Invoices
+  /api/v1/admin/materials:
+    get:
+      description: List curriculum materials. Requires an ACTIVE ADMIN account.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.MaterialListAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List curriculum materials
+      tags:
+      - Admin Materials
+    post:
+      consumes:
+      - application/json
+      description: Create curriculum material. Requires an ACTIVE ADMIN account.
+      parameters:
+      - description: Request body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpsertMaterialRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dto.MaterialAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create curriculum material
+      tags:
+      - Admin Materials
+  /api/v1/admin/materials/{id}:
+    get:
+      description: Get curriculum material. Requires an ACTIVE ADMIN account.
+      parameters:
+      - description: Resource ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.MaterialAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get curriculum material
+      tags:
+      - Admin Materials
+    put:
+      consumes:
+      - application/json
+      description: Update curriculum material. Requires an ACTIVE ADMIN account.
+      parameters:
+      - description: Resource ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Request body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpsertMaterialRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.MaterialAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update curriculum material
+      tags:
+      - Admin Materials
+  /api/v1/admin/materials/{id}/status:
+    patch:
+      consumes:
+      - application/json
+      description: Update material status. Requires an ACTIVE ADMIN account.
+      parameters:
+      - description: Resource ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Request body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateStatusRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.MaterialAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update material status
+      tags:
+      - Admin Materials
+  /api/v1/admin/materials/{material_id}/sub-materials:
+    get:
+      description: List sub-materials. Requires an ACTIVE ADMIN account.
+      parameters:
+      - description: Resource ID
+        in: path
+        name: material_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.SubMaterialListAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List sub-materials
+      tags:
+      - Admin Sub Materials
+    post:
+      consumes:
+      - application/json
+      description: Create sub-material. Requires an ACTIVE ADMIN account.
+      parameters:
+      - description: Resource ID
+        in: path
+        name: material_id
+        required: true
+        type: integer
+      - description: Request body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpsertSubMaterialRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dto.SubMaterialAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create sub-material
+      tags:
+      - Admin Sub Materials
+  /api/v1/admin/packages:
+    get:
+      description: List course packages. Requires an ACTIVE ADMIN account.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.PackageListAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List course packages
+      tags:
+      - Admin Packages
+    post:
+      consumes:
+      - application/json
+      description: Create course package. Requires an ACTIVE ADMIN account.
+      parameters:
+      - description: Request body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpsertPackageRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dto.PackageAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create course package
+      tags:
+      - Admin Packages
+  /api/v1/admin/packages/{id}:
+    get:
+      description: Get course package. Requires an ACTIVE ADMIN account.
+      parameters:
+      - description: Resource ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.PackageAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get course package
+      tags:
+      - Admin Packages
+    put:
+      consumes:
+      - application/json
+      description: Update course package. Requires an ACTIVE ADMIN account.
+      parameters:
+      - description: Resource ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Request body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpsertPackageRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.PackageAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update course package
+      tags:
+      - Admin Packages
+  /api/v1/admin/packages/{id}/status:
+    patch:
+      consumes:
+      - application/json
+      description: Update package status. Requires an ACTIVE ADMIN account.
+      parameters:
+      - description: Resource ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Request body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateStatusRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.PackageAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update package status
+      tags:
+      - Admin Packages
+  /api/v1/admin/payments:
+    get:
+      description: List all payments. Requires an ACTIVE ADMIN account.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.PaymentListAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List all payments
+      tags:
+      - Admin Payments
+  /api/v1/admin/payments/{id}:
+    get:
+      description: Get payment. Requires an ACTIVE ADMIN account.
+      parameters:
+      - description: Resource ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.PaymentAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get payment
+      tags:
+      - Admin Payments
+  /api/v1/admin/students:
+    get:
+      description: List students. Requires an ACTIVE ADMIN account.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.StudentListAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List students
+      tags:
+      - Admin Students
+  /api/v1/admin/students/{id}:
+    get:
+      description: Get student. Requires an ACTIVE ADMIN account.
+      parameters:
+      - description: Resource ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.StudentAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get student
+      tags:
+      - Admin Students
+  /api/v1/admin/students/{id}/status:
+    patch:
+      consumes:
+      - application/json
+      description: Update student status. Requires an ACTIVE ADMIN account.
+      parameters:
+      - description: Resource ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Request body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateStatusRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.StudentAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update student status
+      tags:
+      - Admin Students
+  /api/v1/admin/sub-materials/{id}:
+    get:
+      description: Get sub-material. Requires an ACTIVE ADMIN account.
+      parameters:
+      - description: Resource ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.SubMaterialAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get sub-material
+      tags:
+      - Admin Sub Materials
+    put:
+      consumes:
+      - application/json
+      description: Update sub-material. Requires an ACTIVE ADMIN account.
+      parameters:
+      - description: Resource ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Request body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpsertSubMaterialRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.SubMaterialAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update sub-material
+      tags:
+      - Admin Sub Materials
+  /api/v1/admin/sub-materials/{id}/status:
+    patch:
+      consumes:
+      - application/json
+      description: Update sub-material status. Requires an ACTIVE ADMIN account.
+      parameters:
+      - description: Resource ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Request body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateStatusRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.SubMaterialAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update sub-material status
+      tags:
+      - Admin Sub Materials
+  /api/v1/admin/trainer-availabilities:
+    get:
+      description: List all trainer availability ranges. Requires an ACTIVE ADMIN
+        account.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.AvailabilityListAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List all trainer availability ranges
+      tags:
+      - Admin Trainer Availability
+  /api/v1/admin/trainer-availabilities/{id}:
+    get:
+      description: Get trainer availability range. Requires an ACTIVE ADMIN account.
+      parameters:
+      - description: Availability ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.AvailabilityAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get trainer availability range
+      tags:
+      - Admin Trainer Availability
+  /api/v1/admin/trainer-availabilities/{id}/cancel:
+    patch:
+      description: Cancel trainer availability. Requires an ACTIVE ADMIN account.
+      parameters:
+      - description: Availability ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.AvailabilityAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Cancel trainer availability
+      tags:
+      - Admin Trainer Availability
+  /api/v1/admin/trainer-availabilities/{id}/publish:
+    post:
+      description: Publish pending trainer availability. Requires an ACTIVE ADMIN
+        account.
+      parameters:
+      - description: Availability ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.AvailabilityAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Publish pending trainer availability
+      tags:
+      - Admin Trainer Availability
+  /api/v1/admin/trainer-reviews:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.TrainerReviewListAPIResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List every trainer review
+      tags:
+      - Admin Trainer Reviews
+  /api/v1/admin/trainers:
+    get:
+      description: List trainers. Requires an ACTIVE ADMIN account.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.TrainerListAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List trainers
+      tags:
+      - Admin Trainers
+    post:
+      consumes:
+      - application/json
+      description: Create trainer. Requires an ACTIVE ADMIN account.
+      parameters:
+      - description: Request body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateTrainerRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dto.TrainerAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create trainer
+      tags:
+      - Admin Trainers
+  /api/v1/admin/trainers/{id}:
+    get:
+      description: Get trainer. Requires an ACTIVE ADMIN account.
+      parameters:
+      - description: Resource ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.TrainerAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get trainer
+      tags:
+      - Admin Trainers
+    put:
+      consumes:
+      - application/json
+      description: Update trainer. Requires an ACTIVE ADMIN account.
+      parameters:
+      - description: Resource ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Request body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateTrainerRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.TrainerAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update trainer
+      tags:
+      - Admin Trainers
+  /api/v1/admin/trainers/{id}/reviews:
+    get:
+      parameters:
+      - description: Trainer ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.TrainerReviewListAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List reviews for a selected trainer
+      tags:
+      - Admin Trainer Reviews
+  /api/v1/admin/trainers/{id}/status:
+    patch:
+      consumes:
+      - application/json
+      description: Update trainer status. Requires an ACTIVE ADMIN account.
+      parameters:
+      - description: Resource ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Request body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateStatusRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.TrainerAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update trainer status
+      tags:
+      - Admin Trainers
+  /api/v1/admin/training-sessions:
+    get:
+      description: List all training session history. Requires an ACTIVE ADMIN account.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.TrainingSessionListAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List all training session history
+      tags:
+      - Admin Training Sessions
+  /api/v1/admin/training-sessions/{id}:
+    get:
+      description: Get training session. Requires an ACTIVE ADMIN account.
+      parameters:
+      - description: Training session ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.TrainingSessionAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get training session
+      tags:
+      - Admin Training Sessions
+  /api/v1/admin/training-sessions/{id}/cancel:
+    patch:
+      consumes:
+      - application/json
+      description: Cancel a scheduled training session. Requires an ACTIVE ADMIN account.
+      parameters:
+      - description: Training session ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Request body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CancelTrainingSessionRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.TrainingSessionAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Cancel a scheduled training session
+      tags:
+      - Admin Training Sessions
+  /api/v1/admin/training-sessions/{id}/reschedule:
+    post:
+      consumes:
+      - application/json
+      description: Reschedule a scheduled training session. Requires an ACTIVE ADMIN
+        account.
+      parameters:
+      - description: Training session ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Request body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.RescheduleTrainingSessionRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.TrainingSessionAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Reschedule a scheduled training session
+      tags:
+      - Admin Training Sessions
+  /api/v1/auth/me:
+    get:
+      description: Returns the currently authenticated ACTIVE user.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.UserAPIResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get current user
+      tags:
+      - Authentication
+  /api/v1/internal/health:
+    get:
+      description: Reports API and PostgreSQL health. Requires environment-configured
+        HTTP Basic Auth.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.HealthResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      security:
+      - BasicAuth: []
+      summary: Check internal service and database health
+      tags:
+      - Internal
+  /api/v1/internal/stats:
+    get:
+      description: Returns user, enrollment, training-session, payment, certificate,
+        and review counts. Requires environment-configured HTTP Basic Auth.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.InternalStatsAPIResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BasicAuth: []
+      summary: Get protected operational statistics
+      tags:
+      - Internal
+  /api/v1/student/certificates:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.CertificateListAPIResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List certificates owned by the authenticated student
+      tags:
+      - Student Certificates
+  /api/v1/student/certificates/{id}:
+    get:
+      parameters:
+      - description: Certificate ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.CertificateAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get an owned certificate with its immutable skill snapshot
+      tags:
+      - Student Certificates
+  /api/v1/student/enrollments:
+    get:
+      description: List own enrollments. Requires an ACTIVE STUDENT account.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.EnrollmentListAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List own enrollments
+      tags:
+      - Student Enrollments
+    post:
+      consumes:
+      - application/json
+      description: Create enrollment and unpaid payment. Requires an ACTIVE STUDENT
+        account.
+      parameters:
+      - description: Request body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateEnrollmentRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dto.EnrollmentCheckoutAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create enrollment and unpaid payment
+      tags:
+      - Student Enrollments
+  /api/v1/student/enrollments/{id}:
+    get:
+      description: Get own enrollment. Requires an ACTIVE STUDENT account.
+      parameters:
+      - description: Resource ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.EnrollmentAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get own enrollment
+      tags:
+      - Student Enrollments
+  /api/v1/student/enrollments/{id}/payment:
+    get:
+      description: Get own enrollment payment. Requires an ACTIVE STUDENT account.
+      parameters:
+      - description: Resource ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.PaymentAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get own enrollment payment
+      tags:
+      - Student Payments
+  /api/v1/student/invoices:
+    get:
+      description: List own paid invoices. Requires an ACTIVE STUDENT account.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.InvoiceListAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List own paid invoices
+      tags:
+      - Student Invoices
+  /api/v1/student/invoices/{id}:
+    get:
+      description: Get own paid invoice. Requires an ACTIVE STUDENT account.
+      parameters:
+      - description: Resource ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.InvoiceAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get own paid invoice
+      tags:
+      - Student Invoices
+  /api/v1/student/packages:
+    get:
+      description: List active course packages. Requires an ACTIVE STUDENT account.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.PackageListAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List active course packages
+      tags:
+      - Student Packages
+  /api/v1/student/packages/{id}:
+    get:
+      description: Get active course package. Requires an ACTIVE STUDENT account.
+      parameters:
+      - description: Resource ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.PackageAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get active course package
+      tags:
+      - Student Packages
+  /api/v1/student/payments/{id}/pay:
+    post:
+      consumes:
+      - application/json
+      description: Simulate payment and issue invoice. Requires an ACTIVE STUDENT
+        account.
+      parameters:
+      - description: Resource ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Request body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.PayRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.PaymentCheckoutAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Simulate payment and issue invoice
+      tags:
+      - Student Payments
+  /api/v1/student/schedules:
+    get:
+      description: List published trainer schedules and available two-hour slots.
+        Requires an ACTIVE STUDENT account.
+      parameters:
+      - description: Filter by YYYY-MM-DD
+        in: query
+        name: date
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.StudentScheduleListAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List published trainer schedules and available two-hour slots
+      tags:
+      - Student Schedules
+  /api/v1/student/skills:
+    get:
+      description: Calculate the latest completed-session assessment for every active
+        sub-material across all student enrollments.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.StudentSkillsAPIResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get current global student skills and score
+      tags:
+      - Student Skills
+  /api/v1/student/skills/history:
+    get:
+      description: List assessments from completed sessions across every student enrollment.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.StudentSkillHistoryAPIResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get global student skill assessment history
+      tags:
+      - Student Skills
+  /api/v1/student/training-sessions:
+    get:
+      description: List own training session history. Requires an ACTIVE STUDENT account.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.TrainingSessionListAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List own training session history
+      tags:
+      - Student Training Sessions
+    post:
+      consumes:
+      - application/json
+      description: Book an available two-hour training session. Requires an ACTIVE
+        STUDENT account.
+      parameters:
+      - description: Request body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.BookTrainingSessionRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dto.TrainingSessionAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Book an available two-hour training session
+      tags:
+      - Student Training Sessions
+  /api/v1/student/training-sessions/{id}:
+    get:
+      description: Get own training session. Requires an ACTIVE STUDENT account.
+      parameters:
+      - description: Training session ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.TrainingSessionAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get own training session
+      tags:
+      - Student Training Sessions
+  /api/v1/student/training-sessions/{id}/cancel:
+    patch:
+      consumes:
+      - application/json
+      description: Cancel own scheduled training session. Requires an ACTIVE STUDENT
+        account.
+      parameters:
+      - description: Training session ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Request body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CancelTrainingSessionRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.TrainingSessionAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Cancel own scheduled training session
+      tags:
+      - Student Training Sessions
+  /api/v1/student/training-sessions/{id}/reschedule:
+    post:
+      consumes:
+      - application/json
+      description: Reschedule own scheduled training session. Requires an ACTIVE STUDENT
+        account.
+      parameters:
+      - description: Training session ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Request body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.RescheduleTrainingSessionRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.TrainingSessionAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Reschedule own scheduled training session
+      tags:
+      - Student Training Sessions
+  /api/v1/student/training-sessions/{id}/review:
+    get:
+      parameters:
+      - description: Training session ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.TrainerReviewAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get an owned session's trainer review
+      tags:
+      - Student Trainer Reviews
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Training session ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Trainer review
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpsertTrainerReviewRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dto.TrainerReviewAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Review the trainer of a completed owned session
+      tags:
+      - Student Trainer Reviews
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Training session ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Trainer review
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpsertTrainerReviewRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.TrainerReviewAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update an owned completed-session trainer review
+      tags:
+      - Student Trainer Reviews
+  /api/v1/trainer/availabilities:
+    get:
+      description: List own availability ranges. Requires an ACTIVE TRAINER account.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.AvailabilityListAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List own availability ranges
+      tags:
+      - Trainer Availability
+    post:
+      consumes:
+      - application/json
+      description: Create own pending availability. Requires an ACTIVE TRAINER account.
+      parameters:
+      - description: Availability range
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpsertAvailabilityRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dto.AvailabilityAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create own pending availability
+      tags:
+      - Trainer Availability
+  /api/v1/trainer/availabilities/{id}:
+    get:
+      description: Get own availability range. Requires an ACTIVE TRAINER account.
+      parameters:
+      - description: Availability ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.AvailabilityAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get own availability range
+      tags:
+      - Trainer Availability
+    put:
+      consumes:
+      - application/json
+      description: Update own pending availability. Requires an ACTIVE TRAINER account.
+      parameters:
+      - description: Availability ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Availability range
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpsertAvailabilityRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.AvailabilityAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update own pending availability
+      tags:
+      - Trainer Availability
+  /api/v1/trainer/availabilities/{id}/cancel:
+    patch:
+      description: Cancel own availability. Requires an ACTIVE TRAINER account.
+      parameters:
+      - description: Availability ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.AvailabilityAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Cancel own availability
+      tags:
+      - Trainer Availability
+  /api/v1/trainer/reviews:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.TrainerReviewListAPIResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List reviews for the authenticated trainer
+      tags:
+      - Trainer Reviews
+  /api/v1/trainer/reviews/summary:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.TrainerReviewSummaryAPIResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Calculate the authenticated trainer's average rating
+      tags:
+      - Trainer Reviews
+  /api/v1/trainer/training-sessions:
+    get:
+      description: List only sessions assigned to the authenticated active trainer.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.TrainingSessionListAPIResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List assigned training sessions
+      tags:
+      - Trainer Training Process
+  /api/v1/trainer/training-sessions/{id}:
+    get:
+      description: Get a session assigned to the authenticated active trainer.
+      parameters:
+      - description: Training session ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.TrainingSessionAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get an assigned training session
+      tags:
+      - Trainer Training Process
+  /api/v1/trainer/training-sessions/{id}/assessments:
+    get:
+      description: List recorded assessments for an assigned training session.
+      parameters:
+      - description: Training session ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.SessionAssessmentListAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List an assigned session's skill assessments
+      tags:
+      - Trainer Training Process
+    put:
+      consumes:
+      - application/json
+      description: Batch-create or update assessments for active sub-materials while
+        the assigned session remains IN_PROGRESS.
+      parameters:
+      - description: Training session ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Assessment batch
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpsertSessionAssessmentsRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.SessionAssessmentListAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Record skill assessments for an in-progress session
+      tags:
+      - Trainer Training Process
+  /api/v1/trainer/training-sessions/{id}/complete:
+    post:
+      description: Complete an IN_PROGRESS session only after at least one skill assessment
+        and a complete evaluation exist.
+      parameters:
+      - description: Training session ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.TrainingSessionAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Complete an assigned in-progress training session
+      tags:
+      - Trainer Training Process
+  /api/v1/trainer/training-sessions/{id}/evaluation:
+    get:
+      description: Get the predicate, notes, and recommendation for an assigned session.
+      parameters:
+      - description: Training session ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.SessionEvaluationAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get an assigned session's evaluation
+      tags:
+      - Trainer Training Process
+    put:
+      consumes:
+      - application/json
+      description: Create or update the predicate, notes, and recommendation while
+        the assigned session remains IN_PROGRESS.
+      parameters:
+      - description: Training session ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Session evaluation
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpsertSessionEvaluationRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.SessionEvaluationAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Record an in-progress session's general evaluation
+      tags:
+      - Trainer Training Process
+  /api/v1/trainer/training-sessions/{id}/start:
+    post:
+      description: Transition an assigned SCHEDULED session to IN_PROGRESS.
+      parameters:
+      - description: Training session ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.TrainingSessionAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Start an assigned scheduled training session
+      tags:
+      - Trainer Training Process
+  /api/v1/trainer/training-sessions/{id}/student-progress:
+    get:
+      description: View previous completed sessions, assessments, and evaluations
+        across all enrollments for the student assigned to this trainer session.
+      parameters:
+      - description: Training session ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.TrainerStudentProgressAPIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: View a student's previous completed training sessions
+      tags:
+      - Trainer Training Process
+  /health:
+    get:
+      description: Reports whether the API and PostgreSQL connection are healthy.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.HealthResponse'
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      summary: Check service health
+      tags:
+      - Health
+securityDefinitions:
+  BasicAuth:
+    type: basic
+  BearerAuth:
+    description: 'Enter the token with the Bearer prefix, for example: "Bearer eyJhbGci..."'
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
