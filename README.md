@@ -323,6 +323,7 @@ go run github.com/swaggo/swag/cmd/swag@v1.16.6 init -g cmd/main.go
 | --- | --- | --- | --- |
 | `APP_ENV` | No | `production` | Runtime environment label; defaults to `development`. |
 | `APP_PORT` | No | `8080` | Local HTTP port; Docker derives it from Railway `PORT`. |
+| `CORS_ALLOWED_ORIGINS` | Yes for a deployed frontend | `https://drive-academy.up.railway.app,http://localhost:5173` | Comma-separated browser origins allowed to call the API; defaults to `http://localhost:5173`. |
 | `PORT` | Railway | `8080` | Platform-assigned port consumed automatically at startup. |
 | `DATABASE_URL` | Yes | `postgres://user:password@host:5432/database?sslmode=require` | PostgreSQL connection URL used by migration, seeding, and the API. |
 | `JWT_SECRET` | Yes | `replace-with-at-least-32-random-characters` | JWT HS256 signing secret containing at least 32 bytes. |
@@ -915,7 +916,8 @@ To deploy:
    the root `Dockerfile` automatically.
 4. Configure `DATABASE_URL` using the Railway PostgreSQL connection reference.
 5. Configure `JWT_SECRET`, `JWT_EXPIRES_IN`, `BASIC_AUTH_USERNAME`,
-   `BASIC_AUTH_PASSWORD`, `ADMIN_NAME`, `ADMIN_EMAIL`, and `ADMIN_PASSWORD`.
+   `BASIC_AUTH_PASSWORD`, `ADMIN_NAME`, `ADMIN_EMAIL`, `ADMIN_PASSWORD`, and
+   `CORS_ALLOWED_ORIGINS=https://drive-academy.up.railway.app,http://localhost:5173`.
 6. Set the healthcheck path to `/health` and configure public networking.
 7. Leave **Custom Start Command** and **Pre-deploy Command** empty; the
    Dockerfile already handles migration, seed, the platform port, and startup.

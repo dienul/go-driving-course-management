@@ -32,7 +32,7 @@ func New(db *gorm.DB, cfg config.Config) (*gin.Engine, error) {
 	internalHandler := handlers.NewInternalHandler(db)
 
 	router := gin.New()
-	router.Use(gin.Logger(), gin.Recovery())
+	router.Use(gin.Logger(), gin.Recovery(), middleware.CORS(cfg.CORSAllowedOrigins))
 	router.GET("/health", handlers.NewHealthHandler(db).Health)
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	internal := router.Group("/api/v1/internal")
